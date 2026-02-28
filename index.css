@@ -291,7 +291,7 @@ img.slider__img--active-next {
     font-size: 0;
 
     width: 74px;
-    height: 20px;
+    height: 2px;
 
     margin-left: 5px;
 
@@ -334,6 +334,10 @@ img.slider__img--active-next {
     font-weight: 600;
 
     color: #32312F;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .kitchen__form-materials {
