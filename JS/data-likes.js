@@ -6,7 +6,8 @@
            indexOfKitchenCart,
            numberOfLikes,
            iLikeIt,
-           isVisible: false
+           isVisible: false,
+           scrollOn: false
         }
     };
 
