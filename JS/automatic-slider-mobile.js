@@ -3,39 +3,57 @@
 const mediaQuery = window.matchMedia('(max-width: 1199px)');
 console.log(mediaQuery.matches);
 
-
-
+let autoScrollIMG;
 let kitchenCarts = Array.from(document.querySelectorAll(".kitchen"));
 
-kitchenCarts.forEach((el, index) => {
-    let isVisible = el.getBoundingClientRect().top < window.innerHeight && 
-                    el.getBoundingClientRect().bottom >= 0 && 
-                    el.getBoundingClientRect().left < window.innerWidth && 
-                    el.getBoundingClientRect().right >= 0;
+let autoSrcoll = function() {
+    window.DataAboutLikes.forEach((el, index) => {
+                
+        if (el.isVisible && el.scrollOn === false) {
+            let oneCardFotos = kitchenCarts[index].querySelectorAll("img[class^='slider__img--']");
+            let sledeBTN = kitchenCarts[index].querySelectorAll(".slider-toggle");
+            let slideCount = oneCardFotos.length - 1;
+            let i = 0;
+            let j = 0;
 
-    window.DataAboutLikes[index].isVisible = isVisible;
-});
+            autoScrollIMG = setInterval(() => {
+                oneCardFotos[i].classList.remove("slider__img--active");
+                sledeBTN[i].classList.remove("slider-toggle--active");
 
-// let oneKitchen = document.querySelector(".kitchen")
-// let oneCardFotos = oneKitchen.querySelectorAll("img[class^='slider__img--']");
-// let slideCount = oneCardFotos.length - 1;
-// let i = 0;
+                oneCardFotos[i].classList.add("slider__img--active-prev");
+                setTimeout(() => { 
+                    oneCardFotos[j].classList.remove("slider__img--active-prev");
+                    j++;
+                    if (j > slideCount) j = 0;
 
-// let autoScrollIMG = setInterval(() => {
-//     oneCardFotos[i].classList.remove("slider__img--active");
-//     i++;
-//     if (i > slideCount) i = 0;
-//     oneCardFotos[i].classList.add("slider__img--active");
+                }, 300);
+
+                i++;
+                if (i > slideCount) i = 0;
+
+                oneCardFotos[i].classList.add("slider__img--active");
+                sledeBTN[i].classList.add("slider-toggle--active");
+                
+                // if (el.isVisible === false) {
+                //     clearInterval(autoScrollIMG);
+                //     el.scrollOn = false;
+
+                // }
+
+            }, 3000);
+
+            el.scrollOn = true;
+
+        } else if (el.isVisible === false) {
+            clearInterval(autoScrollIMG);
+            el.scrollOn = false;
+
+        }
+    });
+}
+
+if (mediaQuery.matches) {
     
-
-//     console.log(i);
-
-// }, 1000);
-
-
-
-window.addEventListener("scroll", function() {
-
     kitchenCarts.forEach((el, index) => {
         let isVisible = el.getBoundingClientRect().top < window.innerHeight && 
                         el.getBoundingClientRect().bottom >= 0 && 
@@ -45,38 +63,65 @@ window.addEventListener("scroll", function() {
         window.DataAboutLikes[index].isVisible = isVisible;
     });
 
-    
+    autoSrcoll();
 
-    
+    window.addEventListener("scrollend", (evt) => {
 
-    
-    
-    // clearInterval(autoScrollIMG);
- console.log(window.DataAboutLikes);
-});
+        kitchenCarts.forEach((el, index) => {
+            let isVisible = el.getBoundingClientRect().top < window.innerHeight && 
+                            el.getBoundingClientRect().bottom >= 0 && 
+                            el.getBoundingClientRect().left < window.innerWidth && 
+                            el.getBoundingClientRect().right >= 0;
 
-let autoScrollIMG;
-window.DataAboutLikes.forEach((el, index) => {
+            window.DataAboutLikes[index].isVisible = isVisible;
+        });
 
-    if (el.isVisible) {
+        
+        autoSrcoll();
+        
+        
+        // clearInterval(autoScrollIMG);
+        // console.log(window.DataAboutLikes);
+    });
+}
 
-        let oneCardFotos = kitchenCarts[index].querySelectorAll("img[class^='slider__img--']");
-        let sledeBTN = kitchenCarts[index].querySelectorAll(".slider-toggle");
-        let slideCount = oneCardFotos.length - 1;
-        let i = 0;
 
-        autoScrollIMG = setInterval(() => {
-            oneCardFotos[i].classList.remove("slider__img--active");
-            sledeBTN[i].classList.remove("slider-toggle--active");
-            i++;
-            if (i > slideCount) i = 0;
-            oneCardFotos[i].classList.add("slider__img--active");
-            sledeBTN[i].classList.add("slider-toggle--active");
+window.addEventListener("resize", () => {
+    if (mediaQuery.matches) {
+
+        kitchenCarts.forEach((el, index) => {
+            let isVisible = el.getBoundingClientRect().top < window.innerHeight && 
+                            el.getBoundingClientRect().bottom >= 0 && 
+                            el.getBoundingClientRect().left < window.innerWidth && 
+                            el.getBoundingClientRect().right >= 0;
+
+            window.DataAboutLikes[index].isVisible = isVisible;
+        });
+
+        autoSrcoll();
+
+        window.addEventListener("scrollend", (evt) => {
+
+            kitchenCarts.forEach((el, index) => {
+                let isVisible = el.getBoundingClientRect().top < window.innerHeight && 
+                                el.getBoundingClientRect().bottom >= 0 && 
+                                el.getBoundingClientRect().left < window.innerWidth && 
+                                el.getBoundingClientRect().right >= 0;
+
+                window.DataAboutLikes[index].isVisible = isVisible;
+            });
+
             
-
-            // console.log(i);
-            // console.log(window.DataAboutLikes[index].isVisible);
-
-        }, 1000);
-    } 
+            autoSrcoll();
+            
+            
+            // clearInterval(autoScrollIMG);
+            // console.log(window.DataAboutLikes);
+        });
+    } else {
+        clearInterval(autoScrollIMG);
+       
+    }
 });
+
+
